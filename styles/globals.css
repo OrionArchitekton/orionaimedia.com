@@ -22,32 +22,28 @@ html:focus-within {
 }
 
 .body-bg {
-    @apply bg-starfield;
-    background-color: #0E141B;
-    background-blend-mode: screen;
+    background: 
+        radial-gradient(circle at 50% 0%, rgba(20, 30, 45, 0.4) 0%, rgba(14, 20, 27, 0) 70%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"),
+        #0E141B;
+    background-blend-mode: normal, overlay, normal;
 }
 
 .gold-emboss {
-    @apply text-gold-gradient drop-shadow-gold;
-    text-shadow: 0 1px 0 rgba(255, 241, 194, 0.6), 0 2px 6px rgba(179, 132, 42, 0.35);
+    @apply text-transparent bg-clip-text bg-gradient-to-br from-gold-g0 via-gold-g1 to-gold-g2;
 }
 
 .wave-layer {
-    @apply bg-wave animate-wave-scroll;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .wave-layer {
-        animation: none;
-    }
+    @apply bg-wave opacity-[0.03];
+    /* Static texture, vastly reduced opacity */
 }
 
 .rounded-panel {
-    @apply rounded-[16px];
+    @apply rounded-lg;
 }
 
 .rounded-button {
-    @apply rounded-[12px];
+    @apply rounded-md;
 }
 
 /* Focus visible styles for better accessibility */
@@ -59,28 +55,28 @@ html:focus-within {
 /* --- Design system helpers (top-firm polish) --- */
 @layer components {
     .container-edge {
-        @apply mx-auto max-w-7xl px-4;
+        @apply mx-auto max-w-7xl px-6;
     }
 
     .surface-card {
-        @apply rounded-panel bg-graphite-800/70 border border-royal-shade/40 backdrop-blur;
+        @apply rounded-panel bg-graphite-800/40 border border-white/5 backdrop-blur-sm shadow-sm;
     }
 
     .surface-panel {
-        @apply rounded-panel bg-graphite-800/60 border border-royal-shade/40;
+        @apply rounded-panel bg-graphite-800/30 border border-white/5;
     }
 
     .btn {
-        @apply rounded-button text-sm font-semibold transition-colors disabled:opacity-50 disabled:pointer-events-none;
+        @apply rounded-button text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none;
     }
     .btn-primary {
-        @apply btn bg-gold-g2/10 border border-gold-g1/40 shadow-gold-emboss text-gold-g0 hover:bg-graphite-800;
+        @apply btn bg-gold-g1 text-graphite-900 hover:bg-gold-g0 shadow-sm;
     }
     .btn-outline {
-        @apply btn border border-royal-shade/50 text-pulse-cyan hover:text-pulse-hover;
+        @apply btn border border-white/10 text-metal-text hover:bg-white/5 hover:text-white;
     }
     .badge {
-        @apply small-caps text-gold-g1/80;
+        @apply text-xs font-medium tracking-widest text-gold-g1/80 uppercase mb-2 block;
     }
 }
 

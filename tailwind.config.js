@@ -32,42 +32,36 @@ export default {
                 }
             },
             fontFamily: {
-                heading: ['Cinzel', 'ui-serif', 'Georgia', 'Times New Roman', 'serif'],
-                body: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif']
+                heading: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                serif: ['Cinzel', 'ui-serif', 'serif']
             },
             letterSpacing: {
-                heading: '0.02em',
-                smallcaps: '0.08em'
+                heading: '-0.02em',
+                smallcaps: '0.05em'
             },
             backgroundImage: {
                 'gold-imperial':
-                    'linear-gradient(92deg, #FFF1C2 0%, #E6C56E 45%, #B3842A 100%)',
-                'starfield':
-                    'radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.28) 99%, transparent 100%), radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.15) 99%, transparent 100%), radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.2) 99%, transparent 100%)',
-                'circuit':
-                    'radial-gradient(ellipse at top right, rgba(24,59,115,0.12), transparent 40%), repeating-linear-gradient(90deg, rgba(83,211,248,0.06), rgba(83,211,248,0.06) 2px, transparent 2px, transparent 8px)'
+                    'linear-gradient(92deg, #FFF1C2 0%, #E6C56E 100%)',
+                'starfield': 'none',
+                'circuit': 'none'
             },
             boxShadow: {
-                'gold-emboss':
-                    '0 1px 0 rgba(255,241,194,0.6), 0 2px 6px rgba(179,132,42,0.35), inset 0 1px 0 rgba(255,241,194,0.35)'
+                'gold-emboss': '0 1px 2px rgba(0,0,0,0.2)'
             },
             dropShadow: {
-                gold: '0 0 24px rgba(230,197,110,0.25)',
-                cyan: '0 0 18px rgba(83,211,248,0.35)'
+                gold: 'none',
+                cyan: 'none'
             },
             keyframes: {
                 sparkle: {
-                    '0%, 100%': { opacity: 0.5, transform: 'scale(1)' },
-                    '50%': { opacity: 1, transform: 'scale(1.12)' }
-                },
-                waveScroll: {
-                    '0%': { backgroundPosition: '0 0, 0 0' },
-                    '100%': { backgroundPosition: '800px 0, -800px 0' }
+                    '0%, 100%': { opacity: 0.5 },
+                    '50%': { opacity: 1 }
                 }
             },
             animation: {
-                sparkle: 'sparkle 1.8s ease-in-out infinite',
-                'wave-scroll': 'waveScroll 18s linear infinite'
+                sparkle: 'none',
+                'wave-scroll': 'none'
             },
             zIndex: {
                 wave: 0,
@@ -77,8 +71,8 @@ export default {
                 header: 50
             },
             borderRadius: {
-                panel: '16px',
-                button: '12px'
+                panel: '8px',
+                button: '6px'
             },
             typography: ({ theme }) => ({
                 DEFAULT: {
@@ -95,35 +89,25 @@ export default {
         plugin(function ({ addUtilities, theme }) {
             addUtilities({
                 '.text-gold-gradient': {
-                    backgroundImage:
-                        'linear-gradient(92deg, #FFF1C2 0%, #E6C56E 45%, #B3842A 100%)',
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    color: 'transparent'
+                    color: theme('colors.gold.g1')
                 },
                 '.ring-gold': {
-                    boxShadow:
-                        '0 0 0 2px rgba(230,197,110,0.65), 0 0 24px rgba(230,197,110,0.25)'
+                    boxShadow: '0 0 0 1px rgba(230,197,110,0.3)'
                 },
                 '.metallic': {
                     color: theme('colors.metal.text')
                 },
                 '.small-caps': {
                     letterSpacing: theme('letterSpacing.smallcaps'),
-                    fontVariant: 'all-small-caps'
+                    textTransform: 'uppercase',
+                    fontSize: '0.75rem',
+                    fontWeight: '600'
                 },
                 '.bg-wave': {
-                    backgroundImage:
-                        'linear-gradient(0deg, rgba(83,211,248,0.08) 2px, transparent 2px), radial-gradient(1200px 50px at 50% 50%, rgba(83,211,248,0.08), transparent 40%)',
-                    backgroundSize: '8px 8px, 1200px 50px'
+                    backgroundImage: 'none'
                 },
-                '@media (prefers-reduced-motion: reduce)': {
-                    '.animate-wave-scroll': {
-                        animation: 'none'
-                    },
-                    '.animate-sparkle': {
-                        animation: 'none'
-                    }
+                '.animate-wave-scroll': {
+                    animation: 'none'
                 }
             });
         })
