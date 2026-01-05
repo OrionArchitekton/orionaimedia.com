@@ -6,15 +6,15 @@ type ButtonBaseProps = {
   children: React.ReactNode;
 };
 
-type AnchorProps = ButtonBaseProps & {
+type AnchorProps = ButtonBaseProps & React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
   variant?: 'primary' | 'outline';
 };
 
-export function ButtonLink({ href, variant = 'primary', className = '', children }: AnchorProps) {
+export function ButtonLink({ href, variant = 'primary', className = '', children, ...rest }: AnchorProps) {
   const classes = `${variant === 'primary' ? 'btn-primary' : 'btn-outline'} ${className}`;
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} {...rest}>
       {children}
     </Link>
   );

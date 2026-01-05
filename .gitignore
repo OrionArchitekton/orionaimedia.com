@@ -13,10 +13,12 @@
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
 *.pem
+*.log
 
 # debug
 npm-debug.log*
@@ -32,4 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OS files
+Thumbs.db
+desktop.ini
 

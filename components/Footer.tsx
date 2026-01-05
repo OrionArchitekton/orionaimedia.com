@@ -4,17 +4,8 @@ import Logo from '@/components/ui/Logo';
 export default function Footer() {
     const nav = [
         ['Home', '/'],
-        ['Work', '/work'],
-        ['Services', '/services'],
-        ['Method', '/method'],
-        ['Packages', '/packages'],
-        ['Designs', '/designs'],
-        ['Assets', '/assets'],
-        ['Insights', '/insights'],
-        ['About', '/about'],
-        ['Contact', '/contact'],
-        ['Privacy', '/privacy'],
-        ['Terms', '/terms']
+        ['Playbook', '/playbook'],
+        ['Contact', '/contact']
     ] as const;
     return (
         <footer className="mt-16 border-t border-royal-shade/30 bg-graphite-900/70" role="contentinfo">
@@ -24,9 +15,12 @@ export default function Footer() {
                         <Logo className="h-8 w-8" />
                         <div className="text-gold-gradient font-semibold">ORION ASCEND</div>
                     </div>
-                    <p className="mt-3 text-sm text-metal-text/70">Imagine. Create. Transcend.</p>
+                    <p className="mt-3 text-sm text-metal-text/70">
+                        An operating subsidiary of Orion Apex Capital<br/>
+                        <span className="text-gold-g1 mt-1 block">Acquire • Improve • Recycle</span>
+                    </p>
                 </div>
-                <nav className="col-span-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" aria-label="Footer navigation">
+                <nav className="col-span-3 flex flex-wrap gap-x-8 gap-y-3 items-center md:justify-end" aria-label="Footer navigation">
                     {nav.map(([label, href]) => (
                         <Link key={href} href={href} className="text-sm text-metal-text/80 hover:text-pulse-hover">
                             {label}

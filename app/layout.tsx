@@ -15,17 +15,17 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
     metadataBase: new URL('https://www.orionaimedia.com'),
     title: {
-        default: 'Orion Ascend Media — Imagine. Create. Transcend.',
+        default: 'Orion Ascend Media — Acquire. Improve. Recycle.',
         template: '%s — Orion Ascend Media'
     },
     description:
-        'Orion Ascend Media (Orion Digital AI) builds content systems that compound distribution, lower CAC, and lift retention.',
+        'Orion Ascend Media is a governed digital-asset acquisition and growth arm within the Orion Apex Capital ecosystem.',
     alternates: { canonical: 'https://www.orionaimedia.com' },
     openGraph: {
         type: 'website',
         siteName: 'Orion Ascend Media',
         title: 'Orion Ascend Media',
-        description: 'Content systems that compound distribution and growth.',
+        description: 'Acquire. Improve. Recycle.',
         url: 'https://www.orionaimedia.com',
         images: [
             {
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: 'Orion Ascend Media',
-        description: 'Content systems that compound distribution and growth.',
+        description: 'Acquire. Improve. Recycle.',
         images: ['/og.png']
     },
     icons: {
