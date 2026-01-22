@@ -39,7 +39,7 @@ export default function HomePage() {
                                     Acquire. Improve. Recycle.
                                 </p>
                                 <p className="text-lg text-metal-text/80 leading-relaxed max-w-2xl mb-12">
-                                    Orion Ascend Media is a governed digital-asset acquisition and growth arm within the Orion Apex Capital ecosystem.
+                                    Orion Ascend Media is an internal digital-asset acquisition and growth arm within the Orion Apex Capital ecosystem, governed by Orion Apex Capital. Orion Ascend Media operates as an internal growth and asset optimization arm governed by Orion Apex Capital, not as a client-facing agency.
                                 </p>
                                 
                                 {/* 3-Card Grid Integrated under Hero */}

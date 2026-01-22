@@ -40,7 +40,7 @@ export default function PlaybookPage() {
                                 <span className="text-gold-g1 font-bold text-xl">01</span>
                                 <h2 className="text-xl md:text-2xl font-semibold text-white">Acquire</h2>
                             </div>
-                            <p className="text-metal-text/90 mb-4 text-base">We acquire assets that are:</p>
+                            <p className="text-metal-text/90 mb-4 text-base">We acquire assets that fit repeatable, system-driven criteria:</p>
                             <ul className="space-y-2 mb-6 text-sm md:text-base">
                                 <li className="flex items-start gap-3">
                                     <span className="text-gold-g1 mt-1.5 text-xs">●</span>
@@ -52,7 +52,7 @@ export default function PlaybookPage() {
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <span className="text-gold-g1 mt-1.5 text-xs">●</span>
-                                    <span className="text-metal-text/80">Capable of compounding with systems, not brute force</span>
+                                    <span className="text-metal-text/80">Capable of compounding through systems, not brute force</span>
                                 </li>
                             </ul>
                             <p className="text-metal-text/60 text-sm border-t border-white/5 pt-4">
@@ -66,7 +66,7 @@ export default function PlaybookPage() {
                                 <span className="text-gold-g1 font-bold text-xl">02</span>
                                 <h2 className="text-xl md:text-2xl font-semibold text-white">Improve</h2>
                             </div>
-                            <p className="text-metal-text/90 mb-4 text-base">Improvements focus on durable levers:</p>
+                            <p className="text-metal-text/90 mb-4 text-base">Improvements focus on durable, repeatable levers:</p>
                             <ul className="space-y-2 mb-6 text-sm md:text-base">
                                 <li className="flex items-start gap-3">
                                     <span className="text-gold-g1 mt-1.5 text-xs">●</span>
@@ -96,7 +96,7 @@ export default function PlaybookPage() {
                                 <span className="text-gold-g1 font-bold text-xl">03</span>
                                 <h2 className="text-xl md:text-2xl font-semibold text-white">Recycle</h2>
                             </div>
-                            <p className="text-metal-text/90 mb-4 text-base">Assets are recycled through:</p>
+                            <p className="text-metal-text/90 mb-4 text-base">Assets are recycled through measured redeployment paths:</p>
                             <ul className="space-y-2 mb-6 text-sm md:text-base">
                                 <li className="flex items-start gap-3">
                                     <span className="text-gold-g1 mt-1.5 text-xs">●</span>
@@ -112,7 +112,7 @@ export default function PlaybookPage() {
                                 </li>
                             </ul>
                             <p className="text-metal-text/60 text-sm border-t border-white/5 pt-4">
-                                Capital is redeployed deliberately, not reflexively.
+                                Capital is redeployed deliberately through repeatable systems, not reflexively.
                             </p>
                         </div>
 
@@ -137,6 +137,9 @@ export default function PlaybookPage() {
                     </div>
                     <div className="mt-8 text-center text-metal-text/50 italic text-sm">
                         This is asset management, not content farming.
+                    </div>
+                    <div className="mt-3 text-center text-metal-text/50 text-sm">
+                        This flywheel governs internal assets only and does not represent a retail service or outsourced growth offering.
                     </div>
                 </AnimateInClient>
             </main>
