@@ -48,7 +48,7 @@ returns a clear `503` ("Email service not configured") until `RESEND_API_KEY` an
 | `npm run dev` | Start the Next.js dev server on port 3000 |
 | `npm run build` | Production build |
 | `npm start` | Serve the production build |
-| `npm run lint` | `next lint` (non-failing: wrapped as `next lint \|\| echo skip`, never blocks a build) |
+| `npm run lint` | `next lint` (non-failing: wrapped as <code>next lint &#124;&#124; echo skip</code>, never blocks a build) |
 | `npm run og:build` | Render Open Graph PNGs into `public/og/` (`scripts/batch-og.mjs`) |
 | `npm run cases:build` | Capture case-study screenshots via Puppeteer (`scripts/case-shots.mjs`) |
 | `npm run assets:build` | Run `og:build` then `cases:build` |
