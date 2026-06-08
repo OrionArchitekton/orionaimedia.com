@@ -1,194 +1,219 @@
-# Orion Ascend Media — Next.js 14 + Tailwind
+# Orion Ascend Media
 
-Production-ready website for **Orion Ascend Media** (Orion Digital AI), featuring a gold/royal-blue/pulse-cyan design system inspired by the brand logo.
+Marketing site for Orion Ascend Media (OAM), a governed digital-asset acquisition and growth arm within the Orion Apex Capital ecosystem.
 
----
+Live: https://www.orionaimedia.com
 
-## Quick Start
+OAM operates as an internal growth and asset-optimization arm governed by Orion Apex Capital, not as a client-facing retail agency. The site presents the mandate — **Acquire. Improve. Recycle.** — and routes external inquiries to the parent organization.
+
+> Note: the repo is mid-transition. The home, about, and contact pages carry the current "internal governed arm" framing, while the services, channels, packages, and work pages still carry older client-facing agency copy (pricing tiers, podcast/YouTube/newsletter production, case studies). Treat the older pages as not-yet-reconciled. See [Known gaps](#known-gaps).
+
+## Stack
+
+- Next.js 14 (App Router) + React 18
+- TypeScript 5
+- Tailwind CSS 3 (design tokens in `tailwind.config.js`)
+- framer-motion 11 (client-side entrance animations)
+- Resend — contact email delivery (`app/api/contact/route.ts`)
+- sanitize-html — server-side input sanitization
+- next/og — dynamic Open Graph images at the edge (`app/og/[slug]/route.tsx`)
+- Puppeteer + Sharp — build-time asset generation (OG PNGs, case-study screenshots)
+- Google Fonts via `next/font` — Cinzel (headings), Inter (body)
+- Deploy target: Vercel
+
+## Local development
 
 ```bash
-# Install dependencies
+# 1. Clone
+git clone https://github.com/OrionArchitekton/orionaimedia.com.git
+cd orionaimedia.com
+
+# 2. Install dependencies
 npm install
-# or
-pnpm install
 
-# Run dev server
+# 3. Run the dev server
 npm run dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open http://localhost:3000.
 
----
+The contact API and analytics are env-gated — the site renders and the contact form
+returns a clear `503` ("Email service not configured") until `RESEND_API_KEY` and
+`CONTACT_TO` are set. See [Environment variables](#environment-variables).
 
-## Project Structure
+### Scripts
 
-```
-app/
-  layout.tsx          # Root layout with fonts, metadata, wave background
-  page.tsx            # Homepage
-  services/           # Services page
-  method/             # Method page
-  work/               # Case studies
-  channels/           # Podcast, YouTube, Newsletter
-  packages/           # Pricing tiers
-  insights/           # Blog index
-  insights/[slug]/    # Blog post pages
-  about/              # About page
-  contact/            # Contact form
-  privacy/            # Privacy policy
-  terms/              # Terms of service
-  not-found.tsx       # 404 page
-  robots.ts           # robots.txt
-  sitemap.ts          # sitemap.xml
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the Next.js dev server on port 3000 |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | `next lint` (non-failing: wrapped as `next lint \|\| echo skip`, never blocks a build) |
+| `npm run og:build` | Render Open Graph PNGs into `public/og/` (`scripts/batch-og.mjs`) |
+| `npm run cases:build` | Capture case-study screenshots via Puppeteer (`scripts/case-shots.mjs`) |
+| `npm run assets:build` | Run `og:build` then `cases:build` |
 
-components/
-  Header.tsx          # Sticky nav with crest
-  Hero.tsx            # Homepage hero with gold ring + stars
-  Footer.tsx          # Sitemap footer
-  Cards.tsx           # Reusable card grids
-  PackagesTable.tsx   # Pricing comparison
-  CTA.tsx             # Discovery call CTA band
+`og:build` fetches the edge OG route (`/og/<slug>`) from a running server, so a dev or
+production server must be up first. Override the origin with `SITE_ORIGIN`
+(default `http://localhost:3000`):
 
-public/
-  crest.svg           # Optimized logo crest
-  og.png              # Open Graph image (1200×630, to be replaced)
-  favicon.ico         # Favicon (to be replaced)
-  apple-touch-icon.png # iOS icon (to be replaced)
-  site.webmanifest    # PWA manifest
-
-styles/
-  globals.css         # Tailwind + custom utilities
-
-tailwind.config.js    # Design tokens, animations
-postcss.config.js
-next.config.js
-tsconfig.json
-package.json
+```bash
+npm run dev               # in one terminal
+SITE_ORIGIN=http://localhost:3000 npm run og:build
 ```
 
----
+## Environment variables
 
-## Design System
+No `.env.example` is committed. All keys are read from `process.env`; none are required
+to render the site, but the contact form and analytics stay inert until they are set.
+Set these in Vercel project settings (or a local `.env.local`, which is gitignored).
 
-### Colors
+### Server (contact pipeline — `app/api/contact/route.ts`)
 
-- **Graphite-900** `#0E141B` (page background)
-- **Graphite-800** `#151D28` (panels)
-- **Royal-Blue** `#183B73` (globe, accents), shade `#0E2F63`
-- **Pulse-Cyan** `#53D3F8` (waveforms, links), hover `#34B6E3`
-- **Imperial Gold** gradient `#FFF1C2 → #E6C56E → #B3842A` (wordmark, rules)
-- **Metallic** `#E5E7EB` (body text)
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Yes (for contact) | Resend API key. Email sends from `noreply@orionaimedia.com`. |
+| `CONTACT_TO` | Yes (for contact) | Destination inbox for inquiries. |
 
-### Typography
+If either is missing, `POST /api/contact` returns `503` and the form surfaces a mailto fallback.
 
-- **Headings:** Cinzel (Google Fonts), tracking `0.02em`
-- **Body:** Inter (Google Fonts)
-- **Small-caps:** utility class `.small-caps` with `0.08em` tracking
+### Client (optional)
 
-### Motifs
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_GA_ID` | Enables env-gated GA4 (`gtag`) in `app/layout.tsx`. Page views are sent manually via `lib/track.ts`. |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Enables the Plausible script in `app/layout.tsx`. |
+| `NEXT_PUBLIC_CAL_URL` | Embeds a scheduling iframe (Cal.com / Calendly) in `components/ContactForm.tsx`. When unset, the component falls back to a hardcoded Calendly link. |
 
-- Gold ring + star glyphs (hero)
-- Pulse waveform (background layer)
-- Starfield micro-texture
-- Yin-yang globe (crest)
+### Build script
 
-### Motion
+| Variable | Purpose |
+| --- | --- |
+| `SITE_ORIGIN` | Origin that `scripts/batch-og.mjs` fetches OG images from. Default `http://localhost:3000`. |
 
-- Sparkle animation on stars (1.8s)
-- Wave scroll background (18s linear)
-- Respects `prefers-reduced-motion`
+Never commit real values. `.gitignore` excludes `.env*.local`.
 
----
+## Contact pipeline
 
-## Content Checklist
+The live contact form is `components/ContactForm.tsx` (a client component), which
+`POST`s to `app/api/contact/route.ts`. The route:
 
-- [ ] Replace `public/og.png` with 1200×630 branded Open Graph image
-- [ ] Replace `public/favicon.ico`, `favicon-32x32.png`, `favicon-16x16.png`
-- [ ] Add `public/apple-touch-icon.png` (180×180)
-- [ ] Add `public/safari-pinned-tab.svg` (mask icon)
-- [ ] Update Formspree endpoint in `app/contact/page.tsx` (line 15)
-- [ ] Add Calendly link in `app/contact/page.tsx` (line 95)
-- [ ] Add analytics tag (Google Analytics, Plausible, etc.) in `app/layout.tsx`
-- [ ] Replace placeholder case studies in `/work` with real data
-- [ ] Add real blog posts or integrate CMS (Contentful, Sanity, MDX)
-- [ ] Update legal placeholders in `/privacy` and `/terms`
+- sanitizes every field with `sanitize-html` (tags and attributes stripped),
+- rate-limits per IP (5 submissions / 10 min, in-memory per runtime instance),
+- rejects submissions with a filled honeypot field (`__hp`),
+- validates required fields (name, email, message) and email format,
+- sends via Resend when `RESEND_API_KEY` + `CONTACT_TO` are set, otherwise returns `503`.
 
----
+Note: `app/contact/page.tsx` is **not** a form — it is a static page stating that OAM
+"does not offer open retail services" and linking inquiries to
+`https://orionapexcapital.com/contact`. The `ContactForm` component is wired separately
+and is where the scheduling embed lives.
 
-## Deployment
+## SEO and metadata
 
-### Vercel (Recommended)
+- Per-page metadata via the App Router `metadata` export; root metadata in `app/layout.tsx`.
+- JSON-LD structured data: `Organization` and `WebSite` injected in `app/layout.tsx`.
+  `lib/schema.ts` also exports `breadcrumbSchema()`, `articleSchema()`, `webPageSchema()`,
+  and `caseStudySchema()` for use on content pages.
+- Dynamic Open Graph images are generated at request time by `app/og/[slug]/route.tsx`
+  (edge runtime, `next/og` `ImageResponse`). They are not a single static `og.png` to swap out.
+- `sitemap.xml` (`app/sitemap.ts`) and `robots.txt` (`app/robots.ts`) are generated routes.
+- `next.config.js` enforces a canonical-host 301 (`orionaimedia.com` → `www.orionaimedia.com`)
+  and a legacy `/blog` → `/insights` 301.
 
-1. Push to GitHub/GitLab
-2. Connect repo to Vercel
-3. Set `NODE_ENV=production`
-4. Deploy
+## Design system
 
-### Other Platforms
+Defined in `tailwind.config.js` and loaded in `app/layout.tsx`.
+
+- **Colors:** graphite-900 `#0E141B` (background), graphite-800 `#151D28` (panels),
+  royal `#183B73` (accents), pulse-cyan `#53D3F8` (links/waveforms), imperial gold scale
+  (`#FFF1C2 → #E6C56E → #B3842A`), metallic `#E5E7EB` (body text).
+- **Typography:** Cinzel (headings), Inter (body), via `next/font/google`.
+- **Motion:** framer-motion entrance animations; background respects `prefers-reduced-motion`.
+
+The OG image generator (`app/og/[slug]/route.tsx`) uses a different palette
+(navy `#0D1B2A`, copper `#B87654`, lime `#E6FF4D`) than the Tailwind tokens above —
+this divergence is intentional-or-stale and not yet reconciled.
+
+## Deploy
+
+Ships to Vercel from the `main` branch (Vercel's default Git integration runs
+`next build`). For a manual or alternative host:
 
 ```bash
 npm run build
 npm start
 ```
 
-Serve the `.next` build output on your platform of choice (Netlify, Cloudflare Pages, Render, etc.).
+There are no CI workflows in this repo (`.github/workflows` is absent), so lint and
+build are not gated in CI; rely on Vercel's build step and local checks.
 
----
+## Project structure
 
-## SEO & Schema
+```
+app/
+  layout.tsx            Root layout: fonts, metadata, JSON-LD, env-gated GA4/Plausible
+  page.tsx              Home (Acquire/Improve/Recycle, governed-arm framing)
+  about/                About (governance copy)
+  contact/              Static redirect page → Orion Apex Capital (not a form)
+  services/             Services (older agency copy — see Known gaps)
+  method/               Method (30/60/90)
+  work/                 Case studies (older agency copy)
+  channels/             Podcast/YouTube/Newsletter (older agency copy)
+  packages/             Pricing tiers (older agency copy)
+  designs/              Design examples
+  assets/               Assets & holdings
+  playbook/             Playbook
+  insights/             Insights index
+  insights/[slug]/      Insight posts (hardcoded mock content)
+  privacy/  terms/      Legal pages
+  not-found.tsx         404
+  robots.ts             /robots.txt
+  sitemap.ts            /sitemap.xml
+  api/contact/route.ts  Contact POST handler (Resend + sanitize + rate-limit)
+  og/[slug]/route.tsx   Dynamic OG image generation (edge, next/og)
 
-- Metadata configured in `app/layout.tsx` and per-page
-- Sitemap generated at `/sitemap.xml`
-- Robots.txt at `/robots.txt`
-- **TODO:** Add Organization and BreadcrumbList schema via `next/head` or JSON-LD in layout
+components/
+  Header.tsx  Footer.tsx  Hero.tsx  Cards.tsx  CTA.tsx  PackagesTable.tsx
+  ContactForm.tsx         Live contact form (POSTs to /api/contact)
+  AnimateInClient.tsx     framer-motion entrance wrapper
+  TrackedLink.tsx         Link with analytics tracking
+  ui/                     Button, Container, Logo, Section
 
----
+lib/
+  schema.ts               JSON-LD builders (Organization, WebSite, Article, Breadcrumb, CreativeWork)
+  track.ts                Client analytics helper
 
-## Performance
+scripts/
+  batch-og.mjs            Fetch /og/<slug> → write public/og/*.png (uses SITE_ORIGIN)
+  case-shots.mjs          Puppeteer case-study screenshots
 
-- Tailwind CSS purged in production (target: <100KB)
-- Fonts preloaded via `next/font/google`
-- SVG crest optimized
-- Lazy loading images (use `next/image` for future assets)
-- Target Lighthouse score: 90+
+public/                   Crest assets, og.png, site.webmanifest
+styles/globals.css        Tailwind layers + custom utilities
+tailwind.config.js  postcss.config.js  next.config.js  tsconfig.json
+```
 
----
+## Known gaps
 
-## Accessibility
+These are real, verifiable issues in the current tree — listed so the next maintainer
+does not rediscover them:
 
-- WCAG AA contrast maintained
-- Semantic HTML (headings, landmarks, labels)
-- Focus states on interactive elements
-- Respects `prefers-reduced-motion`
-
----
-
-## Form Integration
-
-Contact form uses **Formspree** (placeholder). To wire up:
-
-1. Create a Formspree account at [formspree.io](https://formspree.io)
-2. Get your form endpoint (e.g., `https://formspree.io/f/YOUR_FORM_ID`)
-3. Replace in `app/contact/page.tsx` line 15
-
----
-
-## Analytics
-
-Add your analytics provider of choice:
-
-- **Google Analytics:** Add `<Script>` tag in `app/layout.tsx`
-- **Plausible:** Add script tag or `next/script`
-- **Fathom:** Same approach
-
----
+- **Mixed positioning.** Home/about/contact use the governed internal-arm framing;
+  services/channels/packages/work still carry the pre-pivot client-facing agency copy.
+  Reconcile these to one identity.
+- **Insights are mock content.** `app/insights/[slug]/page.tsx` ships hardcoded posts
+  ("replace with CMS/MDX in production").
+- **Insights index link 404s.** The index (`app/insights/page.tsx`) links
+  `90-day-revamp-playbook`, which does not exist in the `[slug]` route or `sitemap.ts`
+  (both list a different set of six slugs). Either add the post or fix the link.
+- **OG palette drift.** The OG generator palette differs from the Tailwind design tokens
+  (see [Design system](#design-system)).
+- **Doc clutter.** The repo root carries a dozen overlapping status/handoff docs
+  (e.g. `🎉_COMPLETE.md`, `HANDOFF.md`, `STATUS.md`, `LAUNCH_CHECKLIST.md`); several still
+  repeat the stale Formspree/agency claims this README corrects. Consolidate into
+  `README` + `DEPLOY.md` + `CHANGELOG.md`.
 
 ## License
 
-Proprietary. All rights reserved by Orion Ascend Media.
-
----
-
-**Questions?** Contact us at hello@orionaimedia.com
+No `LICENSE` file is committed. The project is proprietary — all rights reserved by
+Orion Ascend Media.
