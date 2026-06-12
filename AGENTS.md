@@ -4,8 +4,8 @@
 
 Production marketing website for Orion AI Media (orionaimedia.com) — the OAM
 holding-company web presence. Next.js 14 (App Router) + React 18 + Tailwind,
-with a Resend-backed contact form and Puppeteer-based build-time asset
-generation. GitHub repo name `orionaimedia.com` is a registry
+with a Resend-backed contact API route (currently unreachable from the live
+site — see Boundaries) and Puppeteer-based build-time asset generation. GitHub repo name `orionaimedia.com` is a registry
 domain_repo_exception (recommended name: `oam-web`).
 
 ## Boundaries
@@ -15,7 +15,11 @@ Owns:
 - the public OAM web surface: routes under `app/`, shared `components/`,
   helpers in `lib/` (schema, tracking), `styles/`, static assets in `public/`
 - the contact email API route (`app/api/contact/route.ts`, Resend, env-gated)
-  and the edge OG image route (`app/og/[slug]/`)
+  and the edge OG image route (`app/og/[slug]/`). Its only client,
+  `components/ContactForm.tsx`, is not rendered by any `app/` route —
+  `app/contact/page.tsx` is a static page that links out to
+  orionapexcapital.com/contact — so the contact API is currently unreachable
+  from the public site.
 - build-time asset generation under `scripts/` (`og:build`, `cases:build`)
 
 Does not own:
@@ -49,7 +53,8 @@ npm run build
 
 ## Estate Authority
 
-- Estate doctrine: `/home/orion/src/orion-estate/platform/orion-estate-audit/AGENTS.md`
+- Estate doctrine: `orion-estate-audit/AGENTS.md` — in the orion-estate-audit
+  repo (sibling estate repo, not in this checkout)
 - Registry row: logical_id `business-oac-oam-web` in
-  `/home/orion/src/orion-estate/platform/orion-estate-audit/estate_home_registry.yaml`
-  (home_status `active`, transition `current-but-transitional`)
+  `orion-estate-audit/estate_home_registry.yaml` (same sibling repo;
+  home_status `active`, transition `current-but-transitional`)
