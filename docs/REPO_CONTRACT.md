@@ -44,7 +44,8 @@ The repo name is a domain-repo exception. The role is web-only.
 
 ## Allowed Dependencies
 
-- repo-local Next.js, React, Tailwind, Resend, sanitize-html, and asset tooling
+- repo-local Next.js, React, Tailwind, framer-motion, Resend, sanitize-html,
+  and asset tooling
 - approved public OAM content and static assets
 - env-gated contact, analytics, and scheduling integrations
 - estate doctrine from `orion-estate-audit`
