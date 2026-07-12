@@ -7,6 +7,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
+        "test": "npm run test:root-canonical",
+        "test:root-canonical": "npm run build && node --test tests/root-canonical.test.mjs",
         "lint": "next lint || echo 'skip'",
         "og:build": "node scripts/batch-og.mjs",
         "cases:build": "node scripts/case-shots.mjs",
