@@ -41,15 +41,19 @@ Does not own:
 ## Validation
 
 ```bash
+npm test
 npm run lint
 npm run build
 ```
 
+- `npm test` runs the production build and verifies that the root canonical
+  declarations agree with the canonical rendered into the generated HTML.
 - WARNING: `lint` is non-gating — the script is `next lint || echo 'skip'` and
   always exits 0. No ESLint config exists, so `next lint` currently stops at
   its interactive setup prompt and the wrapper masks the failure: no linting
   actually runs. Do not treat a green exit as a pass.
-- `npm run build` is the effective gate. No test suite is declared.
+- `npm run build` remains the general application gate; `npm test` is the
+  regression gate for the root canonical contract.
 
 ## Estate Authority
 
