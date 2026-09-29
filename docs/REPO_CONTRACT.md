@@ -1,6 +1,6 @@
 # OAM Web Repo Contract
 
-Date: 2026-06-30
+Date: 2026-09-29
 
 Status: binding repo-local contract.
 
@@ -18,20 +18,23 @@ Status: binding repo-local contract.
 
 ## Purpose
 
-`orionaimedia.com` is the Orion AI Media holding-company web surface. It owns
-the OAM public site, static content, web-local routes, env-gated contact API,
-metadata routes, and build-time asset generation.
+`orionaimedia.com` is the Orion Ascend Media web surface. It owns the OAM public site
+(a front door and a privacy note), static content, web-local routes, and build-time
+asset generation. The only server-side behavior is reading the three public YouTube
+feeds for the front door and proxying their hqdefault thumbnails through the Next.js
+image optimizer, with six-hour revalidation and a last-known-release fallback.
 
 The repo name is a domain-repo exception. The role is web-only.
 
 ## Owns
 
 - public OAM web UI, routes, content, and static assets
-- contact API route behavior when environment-gated
-- edge Open Graph image route and metadata routes
+- reading the three public YouTube feeds server-side for the front door
+- retired-page redirects to the front door (`retired-paths.mjs`, used by `next.config.js`)
+- metadata routes
 - build-time web asset generation under `scripts/`
-- web-local analytics hooks when explicitly env-gated
-- README-documented known gaps and positioning reconciliation notes
+- the front door spec (`specs/oam-front-door-spec.md`) and its operator runbook
+  (`docs/runbooks/front-door-channels.md`)
 
 ## Does Not Own
 
@@ -44,10 +47,8 @@ The repo name is a domain-repo exception. The role is web-only.
 
 ## Allowed Dependencies
 
-- repo-local Next.js, React, Tailwind, framer-motion, Resend, sanitize-html,
-  and asset tooling
+- repo-local Next.js, React, Tailwind, and asset tooling
 - approved public OAM content and static assets
-- env-gated contact, analytics, and scheduling integrations
 - estate doctrine from `orion-estate-audit`
 
 ## Forbidden Logic / Forbidden Ownership
@@ -75,14 +76,14 @@ For docs-only contract changes:
 git diff --check
 ```
 
-For implementation changes, follow `AGENTS.md`; `npm run build` is the current
-effective local gate.
+For implementation changes, follow `AGENTS.md`; `npm test` (production build plus
+every `tests/*.test.mjs`) is the current effective local gate, with `npm run test:unit`
+for the unit seam. CI runs `npm test` on every pull request.
 
 ## Basis
 
 - `AGENTS.md`
 - `README.md`
-- `DEPLOY.md`
 - `repos/repo_contract_registry_20260317.csv` in
   `OrionArchitekton/orion-estate-audit`
 - `oam_web_surface_family_repo_contract_20260630.md` in

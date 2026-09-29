@@ -1,6 +1,12 @@
+import { RETIRED_PATHS } from './retired-paths.mjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
+    // Thumbnails are fetched by the server and served from this domain, so visitors never contact YouTube.
+    images: {
+        remotePatterns: [{ protocol: 'https', hostname: 'i.ytimg.com', pathname: '/vi/*/hqdefault.jpg' }]
+    },
     async redirects() {
         return [
             // Enforce canonical host (www)
@@ -10,15 +16,14 @@ const nextConfig = {
                 destination: 'https://www.orionaimedia.com/:path*',
                 permanent: true
             },
-            // Legacy slugs
-            {
-                source: '/blog',
-                destination: '/insights',
-                permanent: true
-            }
+            // Retired agency-era pages land on the front door
+            ...RETIRED_PATHS.map((source) => ({ source, destination: '/', permanent: true })),
+            // The old per-page share images were replaced by one static image
+            { source: '/og/:path*', destination: '/og.png', permanent: true },
+            // Older iOS versions request this name; serve the same touch icon
+            { source: '/apple-touch-icon-precomposed.png', destination: '/apple-touch-icon.png', permanent: true }
         ];
     }
 };
 
 export default nextConfig;
-
