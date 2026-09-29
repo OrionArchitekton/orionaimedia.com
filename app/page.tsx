@@ -35,7 +35,7 @@ export default async function FrontDoor() {
 
             <section aria-label="Channels" className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-3">
                 {CHANNELS.map((channel, index) => (
-                    <ChannelCard key={channel.slug} channel={channel} release={releases[index]} />
+                    <ChannelCard key={channel.slug} channel={channel} release={releases[index]} priority={index === 0} />
                 ))}
             </section>
 

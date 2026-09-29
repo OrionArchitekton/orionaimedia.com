@@ -2,13 +2,13 @@ import Image from 'next/image';
 import type { Channel } from '@/lib/channels';
 import type { SelectedRelease } from '@/lib/latest-release';
 
-type Props = { channel: Channel; release: SelectedRelease };
+type Props = { channel: Channel; release: SelectedRelease; priority?: boolean };
 
-export default function ChannelCard({ channel, release }: Props) {
+export default function ChannelCard({ channel, release, priority = false }: Props) {
     const watchUrl = `https://www.youtube.com/watch?v=${release.videoId}`;
     return (
         <article className="portal overflow-hidden rounded-b-xl rounded-t-[72px] border border-gold/40 pt-6">
-            <a href={watchUrl} className="block" aria-label={`Watch ${release.title}`}>
+            <a href={watchUrl} className="block focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold-light" aria-label={`Watch ${release.title}`}>
                 <Image
                     src={`https://i.ytimg.com/vi/${release.videoId}/hqdefault.jpg`}
                     alt=""
@@ -16,7 +16,7 @@ export default function ChannelCard({ channel, release }: Props) {
                     height={270}
                     sizes="(min-width: 768px) 320px, 100vw"
                     className="aspect-video w-full object-cover"
-                    priority
+                    priority={priority}
                 />
             </a>
             <div className="p-4">
@@ -30,7 +30,7 @@ export default function ChannelCard({ channel, release }: Props) {
                     <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-cream/70">
                         {channel.links.map((link) => (
                             <li key={link.href}>
-                                <a href={link.href} className="hover:text-gold-light">
+                                <a href={link.href} className="inline-flex min-h-6 items-center hover:text-gold-light">
                                     {link.label}
                                 </a>
                             </li>
@@ -38,7 +38,7 @@ export default function ChannelCard({ channel, release }: Props) {
                     </ul>
                 )}
                 <p className="mt-3 border-t border-gold/20 pt-2 text-xs text-gold">
-                    Latest ·{' '}
+                    {'Latest · '}
                     <a href={watchUrl} className="hover:text-gold-light">
                         {release.title}
                     </a>

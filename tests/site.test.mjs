@@ -80,14 +80,20 @@ const FRONT_DOOR_TEXT_IN_ORDER = [
 
 test('the front door shows the name, three channels in order, the in-development row and the footer (AC1)', async () => {
     const html = await readBuilt('server', 'app', 'index.html');
+    // Search the rendered page only: the <head> repeats the name, and the RSC payload after
+    // </main> repeats every string, so a whole-document search cannot see order or absence.
+    const start = html.indexOf('<main');
+    const end = html.indexOf('</main>');
+    assert(start >= 0 && end > start, 'the front door has no <main> element');
+    const main = html.slice(start, end);
     let cursor = -1;
     for (const text of FRONT_DOOR_TEXT_IN_ORDER) {
-        const at = html.indexOf(text, cursor + 1);
+        const at = main.indexOf(text, cursor + 1);
         assert(at > cursor, `"${text}" is missing or out of order`);
         cursor = at;
     }
-    assert.match(html, /href="mailto:hello@orionaimedia\.com"/);
-    assert.match(html, /href="\/privacy"/);
+    assert.match(main, /href="mailto:hello@orionaimedia\.com"/);
+    assert.match(main, /href="\/privacy"/);
 });
 
 test('each channel card shows a release, with its thumbnail served through the image proxy (S1)', async () => {
