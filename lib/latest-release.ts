@@ -11,6 +11,7 @@ export type Release = {
 export type SelectedRelease = Release & { source: 'feed' | 'last-known' };
 
 const VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;
+const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
 const NAMED_ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
 
 function codePoint(value: number, original: string): string {
@@ -33,13 +34,18 @@ function field(entry: string, pattern: RegExp): string | null {
 // Full-length videos only, newest first. Shorts are recognised by their /shorts/ link.
 export function parseFullLengthReleases(feedXml: string): Release[] {
     const releases: Release[] = [];
-    for (const [, entry] of feedXml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)) {
+    // Split rather than run one regex over the whole document, so a flood of unclosed <entry>
+    // tags stays linear; an entry without its closing tag is ignored.
+    for (const chunk of feedXml.split('<entry>').slice(1)) {
+        const end = chunk.indexOf('</entry>');
+        if (end < 0) continue;
+        const entry = chunk.slice(0, end);
         const videoId = field(entry, /<yt:videoId>([^<]*)<\/yt:videoId>/);
         const title = field(entry, /<title>([^<]*)<\/title>/);
         const link = field(entry, /<link rel="alternate" href="([^"]*)"/);
         const published = field(entry, /<published>([^<]*)<\/published>/);
         if (!videoId || !VIDEO_ID.test(videoId)) continue;
-        if (!title || !published || Number.isNaN(Date.parse(published))) continue;
+        if (!title || !published || !ISO_TIMESTAMP.test(published) || Number.isNaN(Date.parse(published))) continue;
         if (link !== `https://www.youtube.com/watch?v=${videoId}`) continue;
         releases.push({ videoId, title: decodeXmlText(title), published });
     }
