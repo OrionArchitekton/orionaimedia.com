@@ -10,9 +10,7 @@
         "test": "npm run build && node --test \"tests/*.test.mjs\"",
         "test:unit": "node --test tests/latest-release.test.mjs tests/channels.test.mjs tests/fetch-feed.test.mjs",
         "lint": "next lint || echo 'skip'",
-        "og:build": "node scripts/batch-og.mjs",
-        "cases:build": "node scripts/case-shots.mjs",
-        "assets:build": "npm run og:build && npm run cases:build"
+        "brand:build": "node scripts/build-brand-images.mjs"
     },
     "dependencies": {
         "next": "^14.2.5",

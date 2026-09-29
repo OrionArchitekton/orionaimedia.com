@@ -1,17 +1,17 @@
 {
     "name": "Orion Ascend Media",
     "short_name": "Orion Ascend",
-    "description": "Content systems that compound distribution and growth",
+    "description": "A small house of original channels for stillness, sound and wonder.",
     "start_url": "/",
     "display": "standalone",
-    "theme_color": "#0E141B",
-    "background_color": "#0E141B",
+    "theme_color": "#050A1F",
+    "background_color": "#050A1F",
     "icons": [
         {
             "src": "/crest-transparent-1024.png",
             "sizes": "1024x1024",
             "type": "image/png",
-            "purpose": "any maskable"
+            "purpose": "any"
         }
     ]
 }

@@ -112,3 +112,21 @@ test('the front door refreshes its feeds every six hours (AC4)', async () => {
     const { routes } = JSON.parse(await readBuilt('prerender-manifest.json'));
     assert.equal(routes['/'].initialRevalidateSeconds, 21600);
 });
+
+function pngSize(buffer, name) {
+    assert.equal(buffer.toString('hex', 0, 8), '89504e470d0a1a0a', `${name} is not a PNG`);
+    return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+}
+
+test('the site icon, touch icon and share image exist and are linked (AC9)', async () => {
+    const publicFile = (name) => readFile(path.join(REPO_ROOT, 'public', name));
+    assert.deepEqual(pngSize(await publicFile('og.png'), 'og.png'), { width: 1200, height: 630 });
+    assert.deepEqual(pngSize(await publicFile('apple-touch-icon.png'), 'apple-touch-icon.png'), { width: 180, height: 180 });
+    const ico = await publicFile('favicon.ico');
+    assert.equal(ico.toString('hex', 0, 4), '00000100', 'favicon.ico must be an ICO file');
+    assert.equal(ico.readUInt16LE(4), 2, 'favicon.ico must hold two sizes');
+    const html = await readBuilt('server', 'app', 'index.html');
+    assert.match(html, /<link[^>]*rel="icon"[^>]*href="\/crest\.svg"/);
+    assert.match(html, /<link[^>]*rel="apple-touch-icon"[^>]*href="\/apple-touch-icon\.png"/);
+    assert.match(html, /<meta[^>]*property="og:image"[^>]*content="https:\/\/www\.orionaimedia\.com\/og\.png"/);
+});
