@@ -41,10 +41,19 @@ function field(entry: string, pattern: RegExp): string | null {
     return match ? match[1].trim() : null;
 }
 
+// The envelope every real feed has: an optional XML declaration, an Atom <feed> root, its
+// closing tag at the very end, and every <entry> closed. Anything else is unreadable.
+const FEED_ENVELOPE = /^\s*(<\?xml[^>]*\?>\s*)?<feed[\s>][\s\S]*<\/feed>\s*$/;
+
+function isWellFormedFeed(feedXml: string): boolean {
+    if (!FEED_ENVELOPE.test(feedXml)) return false;
+    return feedXml.split('<entry>').length === feedXml.split('</entry>').length;
+}
+
 // Full-length videos only, newest first. Shorts are recognised by their /shorts/ link.
 export function parseFullLengthReleases(feedXml: string): Release[] {
     // A truncated or non-feed response is treated as unreadable, never partially trusted.
-    if (!feedXml.includes('</feed>')) return [];
+    if (!isWellFormedFeed(feedXml)) return [];
     const releases: Release[] = [];
     // Split rather than run one regex over the whole document, so a flood of unclosed <entry>
     // tags stays linear; an entry without its closing tag is ignored.

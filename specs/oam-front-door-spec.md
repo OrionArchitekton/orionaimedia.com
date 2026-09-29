@@ -109,8 +109,11 @@ reports failure on the pull request before anyone merges.
   above, the in-development row, the AI disclosure, the contact email link, and the privacy link.
 - **AC2** Latest-release selection skips Shorts and returns the newest full-length video.
 - **AC3** Latest-release selection returns the last-known release when the feed is unreachable,
-  malformed, or has no full-length entry with a valid 11-character identifier and publish time.
-  An entry with an invalid identifier is skipped, never shown.
+  malformed, or has no full-length entry with a valid 11-character identifier and a real
+  calendar publish time. Malformed means the response is not a feed envelope: it does not
+  begin with a `<feed>` root (after an optional XML declaration), does not end with the closing
+  `</feed>`, or has an `<entry>` without its closing tag. An entry with an invalid identifier is
+  skipped, never shown.
 - **AC4** Feed results are reused for six hours; a new full-length video appears within that
   window without a deploy.
 - **AC5** Every retired page permanently redirects to the front door, and no retired page

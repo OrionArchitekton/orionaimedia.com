@@ -73,6 +73,12 @@ test('falls back to the last-known release when the feed cannot supply one (AC3)
         'no timezone': feed(entry({ id: 'noZoneRRRRR', published: '2026-09-02T00:00:00' })),
         'impossible day': feed(entry({ id: 'feb30SSSSSS', published: '2026-02-30T00:00:00+00:00' })),
         'truncated feed': feed(entry({ id: 'cutTTTTTTTT', published: '2026-09-02T00:00:00+00:00' })).replace('</feed>', ''),
+        'no feed root': feed(entry({ id: 'rootVVVVVVV', published: '2026-09-02T00:00:00+00:00' })).replace('<feed ', '<notfeed '),
+        'content after the feed': feed(entry({ id: 'afterWWWWWW', published: '2026-09-02T00:00:00+00:00' })) + '<entry>',
+        'unclosed entry before a valid one': feed(
+            entry({ id: 'openXXXXXXX', published: '2026-09-03T00:00:00+00:00' }).replace('</entry>', ''),
+            entry({ id: 'validYYYYYY', published: '2026-09-02T00:00:00+00:00' })
+        ),
         'unclosed entry': feed(entry({ id: 'openMMMMMMM', published: '2026-09-02T00:00:00+00:00' }).replace('</entry>', ''))
     };
     for (const [name, xml] of Object.entries(cases)) {
