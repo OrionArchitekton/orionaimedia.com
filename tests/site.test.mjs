@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -128,5 +128,46 @@ test('the site icon, touch icon and share image exist and are linked (AC9)', asy
     const html = await readBuilt('server', 'app', 'index.html');
     assert.match(html, /<link[^>]*rel="icon"[^>]*href="\/crest\.svg"/);
     assert.match(html, /<link[^>]*rel="apple-touch-icon"[^>]*href="\/apple-touch-icon\.png"/);
+    assert.match(html, /<meta[^>]*property="og:image"[^>]*content="https:\/\/www\.orionaimedia\.com\/og\.png"/);
+});
+
+const BUILT_PAGES = ['index.html', 'privacy.html', '_not-found.html'];
+const RETIRED_COPY = ['Acquire', 'From $', 'Book a call', 'Ohio'];
+const TRACKING_AND_THIRD_PARTY = ['googletagmanager', 'plausible', 'gtag(', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+
+test('no tracking, no forms, no third-party assets and no retired copy on any page (AC7)', async () => {
+    for (const page of BUILT_PAGES) {
+        const html = await readBuilt('server', 'app', page);
+        for (const banned of [...TRACKING_AND_THIRD_PARTY, '<form', '<input', ...RETIRED_COPY]) {
+            assert(!html.includes(banned), `${page} contains "${banned}"`);
+        }
+        for (const [, url] of html.matchAll(/\ssrc="([^"]+)"/g)) {
+            assert(url.startsWith('/') || url.startsWith('data:'), `${page} loads a third-party asset: ${url}`);
+        }
+    }
+});
+
+test('authored copy contains no long dashes (AC7)', async () => {
+    for (const dir of ['app', 'components', 'lib']) {
+        for (const name of await readdir(path.join(REPO_ROOT, dir), { recursive: true })) {
+            if (!/\.(tsx?|mjs|css)$/.test(name)) continue;
+            const text = await readFile(path.join(REPO_ROOT, dir, name), 'utf8');
+            assert(!/[–—―]/.test(text), `${dir}/${name} contains a long dash`);
+        }
+    }
+});
+
+test('the privacy note states what is collected, points onward and names the owner (AC8)', async () => {
+    const html = await readBuilt('server', 'app', 'privacy.html');
+    for (const text of [
+        'standard hosting logs',
+        'no tracking cookies',
+        'href="mailto:hello@orionaimedia.com"',
+        'href="https://orionawakens.com/privacy"'
+    ]) {
+        assert(html.includes(text), `privacy note is missing ${text}`);
+    }
+    assert.match(html, /Orion Ascend Media is a brand of [A-Z][^<_]{2,}\./);
+    assert.match(html, /<meta[^>]*property="og:url"[^>]*content="https:\/\/www\.orionaimedia\.com\/privacy"/);
     assert.match(html, /<meta[^>]*property="og:image"[^>]*content="https:\/\/www\.orionaimedia\.com\/og\.png"/);
 });

@@ -143,7 +143,3 @@ itself.
 - Any property not listed above, and any change to the properties' own sites.
 - Email sending of any kind; the contact route is removed with its only form.
 - A blog, news, or about page.
-
-## Open item (needed before launch, not before implementation)
-
-- The owner line for the privacy note: "Orion Ascend Media, a brand of ___".
