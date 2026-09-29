@@ -1,3 +1,5 @@
+import { RETIRED_PATHS } from './retired-paths.mjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
@@ -10,15 +12,12 @@ const nextConfig = {
                 destination: 'https://www.orionaimedia.com/:path*',
                 permanent: true
             },
-            // Legacy slugs
-            {
-                source: '/blog',
-                destination: '/insights',
-                permanent: true
-            }
+            // Retired agency-era pages land on the front door
+            ...RETIRED_PATHS.map((source) => ({ source, destination: '/', permanent: true })),
+            // The old per-page share images were replaced by one static image
+            { source: '/og/:path*', destination: '/og.png', permanent: true }
         ];
     }
 };
 
 export default nextConfig;
-
