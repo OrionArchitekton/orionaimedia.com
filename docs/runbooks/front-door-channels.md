@@ -52,8 +52,10 @@ matching `lastKnown` fields in `lib/channels.ts`, run `npm test`, and open a PR.
 
 ## If every card is stuck on its last-known release
 
-Likely causes, in order: YouTube changed the feed format, blocked the host's requests, or
-retired the endpoint. Save a feed with `curl` and compare it with the fixtures in
+Likely causes, in order: YouTube's feed endpoint is having one of its intermittent
+outages (it can return 404 or 500 for some channels for minutes or hours, then recover
+on its own; check with `curl -s -o /dev/null -w '%{http_code}\n' 'https://www.youtube.com/feeds/videos.xml?channel_id=<id>'` and wait), YouTube changed the feed format, blocked the
+host's requests, or retired the endpoint. Save a feed with `curl` and compare it with the fixtures in
 `tests/latest-release.test.mjs`; if the format changed, update `parseFullLengthReleases`
 and its tests together. The site keeps working meanwhile; only freshness is lost.
 
