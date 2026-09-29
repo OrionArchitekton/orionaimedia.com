@@ -32,9 +32,13 @@ node --input-type=module -e "
 import { CHANNELS } from './lib/channels.ts';
 import { parseFullLengthReleases } from './lib/latest-release.ts';
 for (const c of CHANNELS) {
-  const res = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=' + c.youtubeChannelId);
-  const latest = res.ok ? parseFullLengthReleases(await res.text())[0] ?? null : null;
-  console.log(c.slug, res.status, JSON.stringify(latest));
+  try {
+    const res = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=' + c.youtubeChannelId);
+    const latest = res.ok ? parseFullLengthReleases(await res.text())[0] ?? null : null;
+    console.log(c.slug, res.status, JSON.stringify(latest));
+  } catch (error) {
+    console.log(c.slug, 'error', String(error));
+  }
 }"
 ```
 

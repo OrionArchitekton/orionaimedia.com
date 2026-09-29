@@ -195,4 +195,5 @@ test('the privacy note states what is collected, points onward and names the own
     assert.match(html, /Orion Ascend Media is a brand of [A-Z][^<_]{2,}\./);
     assert.match(html, /<meta[^>]*property="og:url"[^>]*content="https:\/\/www\.orionaimedia\.com\/privacy"/);
     assert.match(html, /<meta[^>]*property="og:image"[^>]*content="https:\/\/www\.orionaimedia\.com\/og\.png"/);
+    assert.match(html, /<meta[^>]*property="og:description"[^>]*content="What orionaimedia\.com collects/);
 });
