@@ -71,6 +71,8 @@ test('falls back to the last-known release when the feed cannot supply one (AC3)
         'non-ISO date': feed(entry({ id: 'looseDateLL', published: 'Sep 2 2026' })),
         'impossible month': feed(entry({ id: 'monthQQQQQQ', published: '2026-13-01T00:00:00+00:00' })),
         'no timezone': feed(entry({ id: 'noZoneRRRRR', published: '2026-09-02T00:00:00' })),
+        'impossible day': feed(entry({ id: 'feb30SSSSSS', published: '2026-02-30T00:00:00+00:00' })),
+        'truncated feed': feed(entry({ id: 'cutTTTTTTTT', published: '2026-09-02T00:00:00+00:00' })).replace('</feed>', ''),
         'unclosed entry': feed(entry({ id: 'openMMMMMMM', published: '2026-09-02T00:00:00+00:00' }).replace('</entry>', ''))
     };
     for (const [name, xml] of Object.entries(cases)) {
@@ -102,6 +104,11 @@ test('a flood of unclosed entries falls back quickly', () => {
     const started = performance.now();
     assert.deepEqual(selectLatestRelease('<entry>'.repeat(60000), LAST_KNOWN), fallback);
     assert(performance.now() - started < 1000, 'parsing must stay linear');
+});
+
+test('accepts a real leap day (AC2)', () => {
+    const xml = feed(entry({ id: 'leapUUUUUUU', published: '2028-02-29T12:00:00+00:00' }));
+    assert.equal(selectLatestRelease(xml, LAST_KNOWN).videoId, 'leapUUUUUUU');
 });
 
 test('reads a real recorded feed: skips the newer Short and finds all full-length videos (AC2)', () => {
