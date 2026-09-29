@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { decodeXmlText, selectLatestRelease } from '../lib/latest-release.ts';
+import { decodeXmlText, parseFullLengthReleases, selectLatestRelease } from '../lib/latest-release.ts';
+import { readFileSync } from 'node:fs';
 
 const LAST_KNOWN = { videoId: 'lastKnown01', title: 'Last known', published: '2026-09-01T00:00:00+00:00' };
 
@@ -101,4 +102,15 @@ test('a flood of unclosed entries falls back quickly', () => {
     const started = performance.now();
     assert.deepEqual(selectLatestRelease('<entry>'.repeat(60000), LAST_KNOWN), fallback);
     assert(performance.now() - started < 1000, 'parsing must stay linear');
+});
+
+test('reads a real recorded feed: skips the newer Short and finds all full-length videos (AC2)', () => {
+    const xml = readFileSync(new URL('./fixtures/orion-awakens-feed.xml', import.meta.url), 'utf8');
+    assert.equal(parseFullLengthReleases(xml).length, 5);
+    assert.deepEqual(selectLatestRelease(xml, LAST_KNOWN), {
+        videoId: 'gJUe5KmLhJc',
+        title: 'Guided Inner Child Meditation | The Room Before Choice',
+        published: '2026-09-28T16:00:12+00:00',
+        source: 'feed'
+    });
 });
