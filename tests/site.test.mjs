@@ -64,3 +64,45 @@ test('the sitemap lists exactly the front door and the privacy note (AC6)', asyn
     const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
     assert.deepEqual(locs, ['https://www.orionaimedia.com', 'https://www.orionaimedia.com/privacy']);
 });
+
+const FRONT_DOOR_TEXT_IN_ORDER = [
+    'Orion Ascend Media',
+    'Imagine · Create · Transcend',
+    'A small house of original channels for stillness, sound and wonder.',
+    'Orion Awakens',
+    'Orion Frequency',
+    'Elsewhere Unfolds',
+    'In development',
+    'Talking Plants',
+    'Yin vs Yang',
+    'All work here is made with AI-assisted production, including AI voices, music and imagery.'
+];
+
+test('the front door shows the name, three channels in order, the in-development row and the footer (AC1)', async () => {
+    const html = await readBuilt('server', 'app', 'index.html');
+    let cursor = -1;
+    for (const text of FRONT_DOOR_TEXT_IN_ORDER) {
+        const at = html.indexOf(text, cursor + 1);
+        assert(at > cursor, `"${text}" is missing or out of order`);
+        cursor = at;
+    }
+    assert.match(html, /href="mailto:hello@orionaimedia\.com"/);
+    assert.match(html, /href="\/privacy"/);
+});
+
+test('each channel card shows a release, with its thumbnail served through the image proxy (S1)', async () => {
+    const html = await readBuilt('server', 'app', 'index.html');
+    const watched = new Set(
+        [...html.matchAll(/href="https:\/\/www\.youtube\.com\/watch\?v=([A-Za-z0-9_-]{11})"/g)].map((m) => m[1])
+    );
+    const thumbnails = new Set(
+        [...html.matchAll(/src="\/_next\/image\?url=https%3A%2F%2Fi\.ytimg\.com%2Fvi%2F([A-Za-z0-9_-]{11})%2Fhqdefault\.jpg/g)].map((m) => m[1])
+    );
+    assert.equal(watched.size, 3, 'expected one release per channel');
+    assert.deepEqual([...thumbnails].sort(), [...watched].sort(), 'each release needs its own proxied thumbnail');
+});
+
+test('the front door refreshes its feeds every six hours (AC4)', async () => {
+    const { routes } = JSON.parse(await readBuilt('prerender-manifest.json'));
+    assert.equal(routes['/'].initialRevalidateSeconds, 21600);
+});

@@ -3,6 +3,10 @@ import { RETIRED_PATHS } from './retired-paths.mjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
+    // Thumbnails are fetched by the server and served from this domain, so visitors never contact YouTube.
+    images: {
+        remotePatterns: [{ protocol: 'https', hostname: 'i.ytimg.com', pathname: '/vi/**' }]
+    },
     async redirects() {
         return [
             // Enforce canonical host (www)

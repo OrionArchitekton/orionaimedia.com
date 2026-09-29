@@ -2,89 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    color-scheme: dark;
+/* Night sky: sparse stars over a midnight-to-indigo glow (Observatory direction). */
+.sky {
+    background:
+        radial-gradient(1px 1px at 12% 18%, rgb(255 255 255 / 0.55) 50%, transparent 51%),
+        radial-gradient(1px 1px at 78% 12%, rgb(255 255 255 / 0.6) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 64% 30%, rgb(253 215 139 / 0.65) 50%, transparent 51%),
+        radial-gradient(1px 1px at 30% 40%, rgb(255 255 255 / 0.4) 50%, transparent 51%),
+        radial-gradient(1px 1px at 90% 44%, rgb(255 255 255 / 0.45) 50%, transparent 51%),
+        radial-gradient(1px 1px at 6% 62%, rgb(255 255 255 / 0.35) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 44% 8%, rgb(255 255 255 / 0.55) 50%, transparent 51%),
+        radial-gradient(1px 1px at 22% 88%, rgb(255 255 255 / 0.35) 50%, transparent 51%),
+        radial-gradient(1px 1px at 70% 80%, rgb(253 215 139 / 0.45) 50%, transparent 51%),
+        radial-gradient(ellipse at 50% -10%, #1b3a8f 0%, #0a1b4d 38%, #050a1f 78%);
 }
 
-html,
-body {
-    @apply bg-graphite-900 text-metal-text antialiased;
+/* Gold gradient wordmark, as in the approved mockup. */
+.wordmark {
+    background: linear-gradient(180deg, #fdd78b, #e8b45c 60%, #b3842a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-/* Smooth scrolling, but respect reduced-motion */
-html:focus-within {
-    scroll-behavior: smooth;
-}
-@media (prefers-reduced-motion: reduce) {
-    html:focus-within {
-        scroll-behavior: auto;
-    }
+/* Channel card: faint indigo glow under the arch, deepening to midnight. */
+.portal {
+    background: linear-gradient(180deg, rgb(27 58 143 / 0.35), rgb(5 10 31 / 0.85) 40%);
 }
 
-.body-bg {
-    background: 
-        radial-gradient(circle at 50% 0%, rgba(20, 30, 45, 0.4) 0%, rgba(14, 20, 27, 0) 70%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"),
-        #0E141B;
-    background-blend-mode: normal, overlay, normal;
-}
-
-.gold-emboss {
-    @apply text-transparent bg-clip-text bg-gradient-to-br from-gold-g0 via-gold-g1 to-gold-g2;
-}
-
-.wave-layer {
-    @apply bg-wave opacity-[0.03];
-    /* Static texture, vastly reduced opacity */
-}
-
-.rounded-panel {
-    @apply rounded-lg;
-}
-
-.rounded-button {
-    @apply rounded-md;
-}
-
-/* Focus visible styles for better accessibility */
-:where(a, button, [role="button"], input, select, textarea):focus-visible {
-    outline: 2px solid theme('colors.pulse.hover');
-    outline-offset: 2px;
-}
-
-/* --- Design system helpers (top-firm polish) --- */
-@layer components {
-    .container-edge {
-        @apply mx-auto max-w-7xl px-6;
-    }
-
-    .surface-card {
-        @apply rounded-panel bg-graphite-800/40 border border-white/5 backdrop-blur-sm shadow-sm;
-    }
-
-    .surface-panel {
-        @apply rounded-panel bg-graphite-800/30 border border-white/5;
-    }
-
-    .btn {
-        @apply rounded-button text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none;
-    }
-    .btn-primary {
-        @apply btn bg-gold-g1 text-graphite-900 hover:bg-gold-g0 shadow-sm;
-    }
-    .btn-outline {
-        @apply btn border border-white/10 text-metal-text hover:bg-white/5 hover:text-white;
-    }
-    .badge {
-        @apply text-xs font-medium tracking-widest text-gold-g1/80 uppercase mb-2 block;
-    }
-}
-
-/* Enhance selection + smoothing */
-::selection {
-    background: rgba(230, 197, 110, 0.24);
-}
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.pill {
+    border: 1px solid rgb(254 242 202 / 0.2);
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
 }
