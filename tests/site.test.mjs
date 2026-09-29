@@ -47,7 +47,8 @@ test('real retired URLs reach the front door, and old share images the new one (
         '/insights/youtube-seo-2025': '/',
         '/work/case-alpha': '/',
         '/blog': '/',
-        '/og/home': '/og.png'
+        '/og/home': '/og.png',
+        '/apple-touch-icon-precomposed.png': '/apple-touch-icon.png'
     };
     for (const [pathname, destination] of Object.entries(expected)) {
         const rule = redirectFor(redirects, pathname);

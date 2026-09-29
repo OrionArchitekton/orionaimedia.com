@@ -19,7 +19,9 @@ const nextConfig = {
             // Retired agency-era pages land on the front door
             ...RETIRED_PATHS.map((source) => ({ source, destination: '/', permanent: true })),
             // The old per-page share images were replaced by one static image
-            { source: '/og/:path*', destination: '/og.png', permanent: true }
+            { source: '/og/:path*', destination: '/og.png', permanent: true },
+            // Older iOS versions request this name; serve the same touch icon
+            { source: '/apple-touch-icon-precomposed.png', destination: '/apple-touch-icon.png', permanent: true }
         ];
     }
 };
