@@ -30,3 +30,12 @@ test('returns null when the request throws (network error or timeout)', async (t
     });
     assert.equal(await fetchFeed('UCabcdefghijklmnopqrstuv'), null);
 });
+
+test('returns null when the fetch never settles, even if it ignores the abort signal', async (t) => {
+    t.mock.timers.enable({ apis: ['setTimeout'] });
+    t.mock.method(globalThis, 'fetch', () => new Promise(() => {}));
+    const pending = fetchFeed('UCabcdefghijklmnopqrstuv');
+    t.mock.timers.tick(5000);
+    const winner = await Promise.race([pending, new Promise((resolve) => setImmediate(() => resolve('STILL_PENDING')))]);
+    assert.equal(winner, null);
+});
