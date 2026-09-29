@@ -135,10 +135,10 @@ const BUILT_PAGES = ['index.html', 'privacy.html', '_not-found.html'];
 const RETIRED_COPY = ['Acquire', 'From $', 'Book a call', 'Ohio'];
 const TRACKING_AND_THIRD_PARTY = ['googletagmanager', 'plausible', 'gtag(', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
-test('no tracking, no forms, no third-party assets and no retired copy on any page (AC7)', async () => {
+test('no tracking, no forms and no third-party assets on any page (AC7)', async () => {
     for (const page of BUILT_PAGES) {
         const html = await readBuilt('server', 'app', page);
-        for (const banned of [...TRACKING_AND_THIRD_PARTY, '<form', '<input', ...RETIRED_COPY]) {
+        for (const banned of [...TRACKING_AND_THIRD_PARTY, '<form', '<input']) {
             assert(!html.includes(banned), `${page} contains "${banned}"`);
         }
         // Everything the browser loads: src, srcset and imagesrcset values, and <link> hrefs
@@ -155,6 +155,18 @@ test('no tracking, no forms, no third-party assets and no retired copy on any pa
                 const url = entry.trim().split(/\s+/)[0];
                 assert(url.startsWith('/') || url.startsWith('data:'), `${page} loads a third-party asset: ${url}`);
             }
+        }
+    }
+});
+
+test('no retired-era copy in authored source (AC7)', async () => {
+    // Checked in source rather than built HTML: live video titles are part of the built page
+    // and must not be able to fail this check.
+    for (const dir of ['app', 'components', 'lib']) {
+        for (const name of await readdir(path.join(REPO_ROOT, dir), { recursive: true })) {
+            if (!/\.(tsx?|mjs|css)$/.test(name)) continue;
+            const text = await readFile(path.join(REPO_ROOT, dir, name), 'utf8');
+            for (const copy of RETIRED_COPY) assert(!text.includes(copy), `${dir}/${name} still says "${copy}"`);
         }
     }
 });
