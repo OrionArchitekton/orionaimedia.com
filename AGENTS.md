@@ -2,8 +2,8 @@
 
 ## Repo Role
 
-Production website for Orion Ascend Media (orionaimedia.com). A two-page Next.js 14 (App
-Router) site: the front door, which shows each featured channel's latest full-length release
+Production website for Orion Ascend Media (orionaimedia.com). A two-page Next.js 16 (App
+Router, React 19) site: the front door, which shows each featured channel's latest full-length release
 from its public YouTube feed, and a privacy note. Every earlier page redirects to the front
 door. GitHub repo name `orionaimedia.com` is a registry domain_repo_exception (recommended
 name: `oam-web`).
@@ -42,7 +42,8 @@ npm run test:unit # the unit seam only, no build
 
 - Node 24 is required: tests import `.ts` files directly (type stripping).
 - `npm test` runs on every pull request (`.github/workflows/ci.yml`).
-- `npm run lint` is non-gating: no ESLint config exists and the script always exits 0.
+- There is no linter (Next 16 removed `next lint`); `npm test` is the gate, and its build
+  type-checks the project.
 - Merging to `main` deploys to production (Vercel). Verify on www.orionaimedia.com after merge.
 
 ## Estate Authority
