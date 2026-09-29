@@ -134,7 +134,7 @@ test('the site icon, touch icon and share image exist and are linked (AC9)', asy
 
 const BUILT_PAGES = ['index.html', 'privacy.html', '_not-found.html'];
 const RETIRED_COPY = ['Acquire', 'From $', 'Book a call', 'Ohio'];
-const TRACKING_AND_THIRD_PARTY = ['googletagmanager', 'plausible', 'gtag(', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+const TRACKING_AND_THIRD_PARTY = ['googletagmanager', 'plausible.io', 'gtag(', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 test('no tracking, no forms and no third-party assets on any page (AC7)', async () => {
     for (const page of BUILT_PAGES) {

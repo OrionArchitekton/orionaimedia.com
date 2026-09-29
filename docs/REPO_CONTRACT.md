@@ -1,6 +1,6 @@
 # OAM Web Repo Contract
 
-Date: 2026-06-30
+Date: 2026-09-29
 
 Status: binding repo-local contract.
 
@@ -21,7 +21,8 @@ Status: binding repo-local contract.
 `orionaimedia.com` is the Orion Ascend Media web surface. It owns the OAM public site
 (a front door and a privacy note), static content, web-local routes, and build-time
 asset generation. The only server-side behavior is reading the three public YouTube
-feeds for the front door, with six-hour revalidation and a last-known-release fallback.
+feeds for the front door and proxying their hqdefault thumbnails through the Next.js
+image optimizer, with six-hour revalidation and a last-known-release fallback.
 
 The repo name is a domain-repo exception. The role is web-only.
 
@@ -32,7 +33,8 @@ The repo name is a domain-repo exception. The role is web-only.
 - retired-page redirects to the front door (`retired-paths.mjs`, used by `next.config.js`)
 - metadata routes
 - build-time web asset generation under `scripts/`
-- README-documented known gaps and positioning reconciliation notes
+- the front door spec (`specs/oam-front-door-spec.md`) and its operator runbook
+  (`docs/runbooks/front-door-channels.md`)
 
 ## Does Not Own
 
@@ -82,7 +84,6 @@ for the unit seam. CI runs `npm test` on every pull request.
 
 - `AGENTS.md`
 - `README.md`
-- `DEPLOY.md`
 - `repos/repo_contract_registry_20260317.csv` in
   `OrionArchitekton/orion-estate-audit`
 - `oam_web_surface_family_repo_contract_20260630.md` in
