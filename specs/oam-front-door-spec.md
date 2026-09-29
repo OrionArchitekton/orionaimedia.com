@@ -99,6 +99,11 @@ reports failure on the pull request before anyone merges.
 - Feed reading happens on the server, at most once per six hours per channel.
 - Feed text is untrusted. Titles render as plain text only. A video identifier is used only
   when it matches YouTube's 11-character identifier format.
+- Feed parsing recognizes YouTube's Atom feed format with lightweight pattern matching; it is
+  not a general XML validator. An unusual but well-formed variant (for example, attributes on
+  an `<entry>` element) may be skipped or misread. The worst case is a card showing an older or
+  unexpected release until the next refresh; the identifier and plain-text rules above still
+  hold.
 - Thumbnails keep their 16:9 shape: titles are baked into them, so other crops cut words off.
 - Copy carries no metrics, testimonials, prices, client claims, health claims, or dated
   predictions, and no long dashes.

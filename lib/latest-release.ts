@@ -43,6 +43,8 @@ function field(entry: string, pattern: RegExp): string | null {
 
 // The envelope every real feed has: an optional XML declaration, an Atom <feed> root, its
 // closing tag at the very end, and every <entry> closed. Anything else is unreadable.
+// This is pattern matching for YouTube's Atom format, not a general XML validator (see the
+// spec's constraints for the accepted limit).
 const FEED_ENVELOPE = /^\s*(<\?xml[^>]*\?>\s*)?<feed[\s>][\s\S]*<\/feed>\s*$/;
 
 function isWellFormedFeed(feedXml: string): boolean {
