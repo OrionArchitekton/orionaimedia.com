@@ -32,10 +32,13 @@ node --input-type=module -e "
 import { CHANNELS } from './lib/channels.ts';
 import { parseFullLengthReleases } from './lib/latest-release.ts';
 for (const c of CHANNELS) {
-  const xml = await (await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=' + c.youtubeChannelId)).text();
-  console.log(c.slug, JSON.stringify(parseFullLengthReleases(xml)[0] ?? null));
+  const res = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=' + c.youtubeChannelId);
+  const latest = res.ok ? parseFullLengthReleases(await res.text())[0] ?? null : null;
+  console.log(c.slug, res.status, JSON.stringify(latest));
 }"
 ```
+
+A status other than 200 means the feed itself is failing; see the section on cards stuck on their last-known release.
 
 ## Refresh the last-known releases
 
