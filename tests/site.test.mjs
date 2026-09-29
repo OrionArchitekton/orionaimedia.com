@@ -141,8 +141,20 @@ test('no tracking, no forms, no third-party assets and no retired copy on any pa
         for (const banned of [...TRACKING_AND_THIRD_PARTY, '<form', '<input', ...RETIRED_COPY]) {
             assert(!html.includes(banned), `${page} contains "${banned}"`);
         }
-        for (const [, url] of html.matchAll(/\ssrc="([^"]+)"/g)) {
-            assert(url.startsWith('/') || url.startsWith('data:'), `${page} loads a third-party asset: ${url}`);
+        // Everything the browser loads: src, srcset and imagesrcset values, and <link> hrefs
+        // other than canonical/alternate (which are metadata, not loads).
+        const candidates = [...html.matchAll(/\s(?:src|srcset|imagesrcset)="([^"]+)"/gi)].map((m) => m[1]);
+        for (const [tag] of html.matchAll(/<link\s[^>]*>/gi)) {
+            const rel = (/\srel="([^"]+)"/i.exec(tag) || [])[1] || '';
+            if (rel === 'canonical' || rel === 'alternate') continue;
+            const href = (/\shref="([^"]+)"/i.exec(tag) || [])[1];
+            if (href) candidates.push(href);
+        }
+        for (const value of candidates) {
+            for (const entry of value.split(',')) {
+                const url = entry.trim().split(/\s+/)[0];
+                assert(url.startsWith('/') || url.startsWith('data:'), `${page} loads a third-party asset: ${url}`);
+            }
         }
     }
 });
@@ -152,7 +164,7 @@ test('authored copy contains no long dashes (AC7)', async () => {
         for (const name of await readdir(path.join(REPO_ROOT, dir), { recursive: true })) {
             if (!/\.(tsx?|mjs|css)$/.test(name)) continue;
             const text = await readFile(path.join(REPO_ROOT, dir, name), 'utf8');
-            assert(!/[–—―]/.test(text), `${dir}/${name} contains a long dash`);
+            assert(!/[\u2013\u2014\u2015]/.test(text), `${dir}/${name} contains a long dash`);
         }
     }
 });
