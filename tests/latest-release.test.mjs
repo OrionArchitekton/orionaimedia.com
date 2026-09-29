@@ -68,6 +68,8 @@ test('falls back to the last-known release when the feed cannot supply one (AC3)
         'no title': feed(entry({ id: 'noTitleJJJJ', title: null, published: '2026-09-02T00:00:00+00:00' })),
         'no publish time': feed(entry({ id: 'noDateKKKKK' })),
         'non-ISO date': feed(entry({ id: 'looseDateLL', published: 'Sep 2 2026' })),
+        'impossible month': feed(entry({ id: 'monthQQQQQQ', published: '2026-13-01T00:00:00+00:00' })),
+        'no timezone': feed(entry({ id: 'noZoneRRRRR', published: '2026-09-02T00:00:00' })),
         'unclosed entry': feed(entry({ id: 'openMMMMMMM', published: '2026-09-02T00:00:00+00:00' }).replace('</entry>', ''))
     };
     for (const [name, xml] of Object.entries(cases)) {

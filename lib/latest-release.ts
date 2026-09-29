@@ -11,7 +11,7 @@ export type Release = {
 export type SelectedRelease = Release & { source: 'feed' | 'last-known' };
 
 const VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;
-const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
 const NAMED_ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
 
 function codePoint(value: number, original: string): string {
