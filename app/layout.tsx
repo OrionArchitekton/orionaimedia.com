@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Cormorant_Garamond, IBM_Plex_Sans } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
 import { organizationSchema } from '@/lib/schema';
 
@@ -11,9 +11,15 @@ const serif = Cormorant_Garamond({
     display: 'swap',
     variable: '--font-serif'
 });
-const sans = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-sans' });
+const sans = IBM_Plex_Sans({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700'],
+    display: 'swap',
+    variable: '--font-sans'
+});
 
 const DESCRIPTION = 'A small house of original channels for stillness, sound and wonder.';
+const SITE_TITLE = 'Orion Ascend Media: Channels for Stillness & Sound';
 
 export const viewport: Viewport = {
     themeColor: '#050A1F',
@@ -23,7 +29,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
     metadataBase: new URL('https://www.orionaimedia.com'),
     title: {
-        default: 'Orion Ascend Media',
+        default: SITE_TITLE,
         template: '%s | Orion Ascend Media'
     },
     description: DESCRIPTION,
@@ -31,14 +37,14 @@ export const metadata: Metadata = {
     openGraph: {
         type: 'website',
         siteName: 'Orion Ascend Media',
-        title: 'Orion Ascend Media',
+        title: SITE_TITLE,
         description: DESCRIPTION,
         url: 'https://www.orionaimedia.com',
         images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Orion Ascend Media' }]
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Orion Ascend Media',
+        title: SITE_TITLE,
         description: DESCRIPTION,
         images: ['/og.png']
     },
