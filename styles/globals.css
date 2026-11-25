@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Night sky: sparse stars over a midnight-to-indigo glow (Observatory direction). */
+/* Night sky: sparse stars over a midnight-to-gold observatory glow. */
 .sky {
     background:
         radial-gradient(1px 1px at 12% 18%, rgb(255 255 255 / 0.55) 50%, transparent 51%),
@@ -14,24 +14,22 @@
         radial-gradient(1.5px 1.5px at 44% 8%, rgb(255 255 255 / 0.55) 50%, transparent 51%),
         radial-gradient(1px 1px at 22% 88%, rgb(255 255 255 / 0.35) 50%, transparent 51%),
         radial-gradient(1px 1px at 70% 80%, rgb(253 215 139 / 0.45) 50%, transparent 51%),
-        radial-gradient(ellipse at 50% -10%, #1b3a8f 0%, #0a1b4d 38%, #050a1f 78%);
+        radial-gradient(ellipse at 50% -10%, rgb(232 180 92 / 0.14) 0%, #09122b 42%, #050a1f 80%);
 }
 
-/* Gold gradient wordmark, as in the approved mockup. */
+/* Gold display wordmark with high-contrast ink over midnight sky. */
 .wordmark {
-    background: linear-gradient(180deg, #fdd78b, #e8b45c 60%, #b3842a);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #fdd78b;
+    text-shadow: 0 2px 24px rgb(232 180 92 / 0.25);
 }
 
-/* Channel card: faint indigo glow under the arch, deepening to midnight. */
+/* Channel card: warm gold glow under the arch, deepening to midnight. */
 .portal {
-    background: linear-gradient(180deg, rgb(27 58 143 / 0.35), rgb(5 10 31 / 0.85) 40%);
+    background: linear-gradient(180deg, rgb(232 180 92 / 0.12), rgb(5 10 31 / 0.90) 42%);
 }
 
 .pill {
-    border: 1px solid rgb(254 242 202 / 0.2);
+    border: 1px solid rgb(254 242 202 / 0.25);
     border-radius: 9999px;
     padding: 0.25rem 0.75rem;
 }
@@ -43,5 +41,20 @@
         outline: 2px solid #fdd78b;
         outline-offset: 2px;
         border-radius: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

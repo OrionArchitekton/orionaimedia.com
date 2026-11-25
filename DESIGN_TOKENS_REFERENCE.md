@@ -12,7 +12,7 @@ Defined in `tailwind.config.js` and `styles/globals.css`. Same family as the Ori
 | `gold-deep` | #B3842A | bottom of the wordmark gradient |
 | `cream` | #FEF2CA | body text (at 60 to 85%) |
 
-Type: Cormorant Garamond 500/600 and italic (`font-serif`: wordmark, headings, lede), Inter
+Type: Cormorant Garamond 500/600 and italic (`font-serif`: wordmark, headings, lede), IBM Plex Sans
 (`font-sans`: body). Both are self-hosted by `next/font`.
 
 Classes in `styles/globals.css`: `.sky` (star field over the midnight-to-indigo glow),

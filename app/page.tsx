@@ -31,17 +31,29 @@ export default async function FrontDoor() {
                 <p className="mt-5 font-serif text-xl italic sm:text-2xl">
                     A small house of original channels for stillness, sound and wonder.
                 </p>
+                <nav aria-label="Primary" className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs uppercase tracking-[0.14em] text-cream/85">
+                    <a href="#channels" className="inline-flex min-h-[44px] items-center rounded-full border border-gold/30 px-4 hover:border-gold-light hover:text-gold-light">
+                        Channels
+                    </a>
+                    <a href="#in-development" className="inline-flex min-h-[44px] items-center rounded-full border border-gold/30 px-4 hover:border-gold-light hover:text-gold-light">
+                        In development
+                    </a>
+                    <a href="/privacy" className="inline-flex min-h-[44px] items-center rounded-full border border-gold/30 px-4 hover:border-gold-light hover:text-gold-light">
+                        Privacy
+                    </a>
+                </nav>
             </header>
 
-            <section aria-label="Channels" className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-3">
+            <section id="channels" aria-label="Channels" className="mx-auto mt-10 grid max-w-5xl gap-5 md:grid-cols-3">
                 {CHANNELS.map((channel, index) => (
                     <ChannelCard key={channel.slug} channel={channel} release={releases[index]} priority={index === 0} />
                 ))}
             </section>
 
             <section
+                id="in-development"
                 aria-label="In development"
-                className="mx-auto mt-8 flex max-w-5xl flex-wrap items-center justify-center gap-2 text-xs uppercase tracking-[0.12em] text-cream/70"
+                className="mx-auto mt-8 flex max-w-5xl flex-wrap items-center justify-center gap-2 text-xs uppercase tracking-[0.12em] text-cream/80"
             >
                 <span>In development</span>
                 {IN_DEVELOPMENT.map((project) =>

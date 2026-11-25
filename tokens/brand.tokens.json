@@ -1,0 +1,27 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "name": "Orion Ascend Media Tokens",
+    "version": "1.0.0",
+    "brand": "Orion Ascend Media"
+  },
+  "color": {
+    "midnight": { "$type": "color", "$value": "#050A1F" },
+    "midnight-elevated": { "$type": "color", "$value": "#09122B" },
+    "surface-portal": { "$type": "color", "$value": "#0B1633" },
+    "gold": { "$type": "color", "$value": "#E8B45C" },
+    "gold-light": { "$type": "color", "$value": "#FDD78B" },
+    "gold-deep": { "$type": "color", "$value": "#B3842A" },
+    "cream": { "$type": "color", "$value": "#FEF2CA" },
+    "cream-muted": { "$type": "color", "$value": "#D2C9AF" }
+  },
+  "font": {
+    "serif": { "$type": "fontFamily", "$value": "Cormorant Garamond, Georgia, serif" },
+    "sans": { "$type": "fontFamily", "$value": "IBM Plex Sans, system-ui, sans-serif" }
+  },
+  "radius": {
+    "xl": { "$type": "dimension", "$value": "12px" },
+    "arch": { "$type": "dimension", "$value": "72px" },
+    "full": { "$type": "dimension", "$value": "9999px" }
+  }
+}
